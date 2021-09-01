@@ -278,6 +278,9 @@ public class SwaggerToNeo4jTransformation {
         }
 
 
+        // check if base contains / at last
+        if(!basePath.substring(basePath.length()-1).equals("/"))
+            basePath = basePath.concat("/");
         resource.setBasePath(basePath);
 
         // get title
