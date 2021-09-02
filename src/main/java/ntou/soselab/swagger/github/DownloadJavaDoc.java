@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import ntou.soselab.swagger.web.ProberPathConfig;
 
 @Service
 public class DownloadJavaDoc {
@@ -35,6 +36,9 @@ public class DownloadJavaDoc {
 
     @Autowired
     PathRepository pathRepository;
+    @Autowired
+    ProberPathConfig proberPathConfig;
+
 
     public String downloadGitHubDoc(List<Resource> resources) {
 
@@ -47,7 +51,8 @@ public class DownloadJavaDoc {
                 //String folderName = swaggerName.replaceAll("/", "");
 
                 if(pathRepository.findGitHubsByPathId(pathId).size() > 0) {
-                    File dir_file = new File("/home/andy/Desktop/api-prober/DownloadGitHubJavaDoc/"+pathId.toString());
+                    // File dir_file = new File("/home/andy/Desktop/api-prober/DownloadGitHubJavaDoc/"+pathId.toString());
+                    File dir_file = new File(proberPathConfig.downloadGithubPath +pathId.toString());
 
                     if(!dir_file.exists()) {
                         dir_file.mkdir();

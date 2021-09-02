@@ -22,16 +22,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import ntou.soselab.swagger.web.ProberPathConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class WordNetExpansion {
+
+    @Autowired
+    ProberPathConfig proberPathConfig;
+
     private IDictionary dict = null;
     private WordnetStemmer wordNetStemming;
     Logger log = LoggerFactory.getLogger(WordNetExpansion.class);
     TokenizationAndStemming tokenizationAndStemming = new TokenizationAndStemming();
 
     private String jwnlPropertiesPath = "./src/main/resources/wordnet_config.xml"; // https://github.com/RolandKluge/de.rolandkluge.blog.java.jwnltut/blob/master/src/main/resources/properties.xml.template
-    private String wordNetPath = "/home/andy/Desktop/api-prober/WordNet-3.0/dict"; // "/home/mis101bird/WordNet/dict"; C:\Program Files (x86)\WordNet\2.1\dict /home/mingjen/Documents/WordNet-3.0/dict /Users/xumingjen/WordNet-3.0/dict
+    // private String wordNetPath = "/home/andy/Desktop/api-prober/WordNet-3.0/dict"; // "/home/mis101bird/WordNet/dict"; C:\Program Files (x86)\WordNet\2.1\dict /home/mingjen/Documents/WordNet-3.0/dict /Users/xumingjen/WordNet-3.0/dict
+    private String wordNetPath = proberPathConfig.wordNetPath;
 
     private String[] stackOverflowWords = {"entity", "check", "rule", "limit",
             "hold", "control", "restrict", "train", "suppress", "lock", "draw", "thermostat"};

@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ntou.soselab.swagger.web.ProberPathConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,12 +28,14 @@ public class MethodParser {
     PathRepository pathRepository;
     @Autowired
     DetectSuperset detectSuperset;
+    @Autowired
+    ProberPathConfig proberPathConfig;
 
     @Test
     public void searchDownloadFile() {
 
-        String filePathName = "/home/andy/Desktop/api-prober/DownloadGitHubJavaDoc";
-
+        // String filePathName = "/home/andy/Desktop/api-prober/DownloadGitHubJavaDoc";
+        String filePathName = proberPathConfig.downloadGithubPath;
         File file = new File(filePathName);
 
         // 將下載回來的檔案，名稱為 path id，根據其檔案名稱抓取其 path

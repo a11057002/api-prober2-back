@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import ntou.soselab.swagger.web.ProberPathConfig;
 import ntou.soselab.swagger.neo4j.domain.service.Operation;
 import ntou.soselab.swagger.neo4j.domain.service.Path;
 import ntou.soselab.swagger.neo4j.domain.service.Resource;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+
 @Service
 public class SecurityManager {
 
@@ -32,6 +35,8 @@ public class SecurityManager {
     SecurityRepository securityRepository;
     @Autowired
     OASRepository oasRepository;
+    @Autowired
+    ProberPathConfig proberPathConfig;
 
 
 
@@ -276,7 +281,8 @@ public class SecurityManager {
     // run the Implicit Flow to get token
     public String runImplicitFlow(String securityData){
         JsonObject jsonObject = new JsonParser().parse(securityData).getAsJsonObject();
-        String redirect_uri = "http://140.121.197.130:55213/implicit";
+        // String redirect_uri = "http://140.121.197.130:55213/implicit";
+        String redirect_uri = proberPathConfig.backEndURI + "/implicit";
 
         String resourceId = jsonObject.get("oasId").getAsString();
         String flow = null;
@@ -305,7 +311,8 @@ public class SecurityManager {
     // run the Authorization Code Flow to get grant code
     public String runAuthorizationCodeFlow(String securityData){
         JsonObject jsonObject = new JsonParser().parse(securityData).getAsJsonObject();
-        String redirect_uri = "http://140.121.197.130:55213/auth";
+        // String redirect_uri = "http://140.121.197.130:55213/auth";
+        String redirect_uri = proberPathConfig.backEndURI + "/auth";
 
         String resourceId = jsonObject.get("oasId").getAsString();
         String flow = null;
@@ -335,7 +342,8 @@ public class SecurityManager {
 
     // get the token in Authorization Code Flow
     public String getToken(String code){
-        String redirect_uri = "http://140.121.197.130:55213/auth";
+        // String redirect_uri = "http://140.121.197.130:55213/auth";
+        String redirect_uri = proberPathConfig.backEndURI +  "/auth";
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -348,10 +356,10 @@ public class SecurityManager {
         map.add("code",code);
         map.add("redirect_uri",redirect_uri);
         //map.add("scope","read_station");
-
+        System.out.println(map);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        System.out.println(tokenUrl);
-
+        // System.out.println(tokenUrl);
+        // System.out.println(request);
         ResponseEntity<String> response = restTemplate.exchange(tokenUrl, HttpMethod.POST, request, String.class);
 
         JSONObject responseBody = new JSONObject(response.getBody());
