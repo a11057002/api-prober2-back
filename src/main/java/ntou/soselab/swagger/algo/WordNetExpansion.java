@@ -28,8 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Component
 public class WordNetExpansion {
 
-    @Autowired
-    ProberPathConfig proberPathConfig;
+    private ProberPathConfig proberPathConfig;
 
     private IDictionary dict = null;
     private WordnetStemmer wordNetStemming;
@@ -38,7 +37,7 @@ public class WordNetExpansion {
 
     private String jwnlPropertiesPath = "./src/main/resources/wordnet_config.xml"; // https://github.com/RolandKluge/de.rolandkluge.blog.java.jwnltut/blob/master/src/main/resources/properties.xml.template
     // private String wordNetPath = "/home/andy/Desktop/api-prober/WordNet-3.0/dict"; // "/home/mis101bird/WordNet/dict"; C:\Program Files (x86)\WordNet\2.1\dict /home/mingjen/Documents/WordNet-3.0/dict /Users/xumingjen/WordNet-3.0/dict
-    private String wordNetPath = proberPathConfig.wordNetPath;
+    private String wordNetPath;
 
     private String[] stackOverflowWords = {"entity", "check", "rule", "limit",
             "hold", "control", "restrict", "train", "suppress", "lock", "draw", "thermostat"};
@@ -48,8 +47,10 @@ public class WordNetExpansion {
     File jwnlFile;
     FileInputStream propertiesStream;
 
-    public WordNetExpansion() {
-
+    @Autowired
+    public WordNetExpansion(ProberPathConfig proberPathConfig) {
+        this.proberPathConfig = proberPathConfig;
+        wordNetPath = proberPathConfig.wordNetPath;
         jwiFile = new File(wordNetPath);
         jwnlFile = new File(jwnlPropertiesPath);
         try {
