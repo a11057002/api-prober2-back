@@ -491,6 +491,8 @@ public class TestManager {
     // get the test case and check the login status
     public String getTestCaseList(Long operationId, String token){
         List<TestCase> testCase = testCaseRepository.findTestCasesByOperationId(operationId);
+        Resource testCaseResource = testCaseRepository.getResourceByOperaionId(operationId);
+        Path testCasePath = testCaseRepository.getPathByOperaionId(operationId);
         JSONArray jsonArray = new JSONArray();
         System.out.println(token);
         if(token.length() > 8)  token = token.substring(7);
@@ -505,7 +507,7 @@ public class TestManager {
                 if(token.length() > 8 && jwtUtils.validateJwtToken(token)){
                     String username = jwtUtils.getUserNameFromJwtToken(token);
                     if(testCase.get(i).getProvider().equals(username)){
-                        jsonArray.put(testCase.get(i).toString().replaceFirst("\\{","{\"nodeId\":"+testCase.get(i).getNodeId()+","));
+                        jsonArray.put(testCase.get(i).toString().replaceFirst("\\{","{\"nodeId\":"+testCase.get(i).getNodeId()+",\"url\":\"" + testCaseResource.getBasePath() + "\",\"path\":\""  + testCasePath.getPath() +"\","));
                         System.out.println("enter");
                     }
                 }
@@ -516,7 +518,7 @@ public class TestManager {
                 if(token.length() > 8 && jwtUtils.validateJwtToken(token)){
                     String username = jwtUtils.getUserNameFromJwtToken(token);
                     if(testCase.get(i).getProvider().equals(username)){
-                        jsonArray.put(testCase.get(i).toString().replaceFirst("\\{","{\"nodeId\":"+testCase.get(i).getNodeId()+","));
+                        jsonArray.put(testCase.get(i).toString().replaceFirst("\\{","{\"nodeId\":"+testCase.get(i).getNodeId()+",\"basePath\":\"" + testCaseResource.getBasePath()+ "\",\"path\":\"" + testCasePath.getPath()+"\","));
 
                     }
                     else{
@@ -527,7 +529,7 @@ public class TestManager {
                             }
                         }
                         testCase.get(i).setParameters(paramArray.toString());
-                        jsonArray.put(testCase.get(i).toString().replaceFirst("\\{","{\"nodeId\":"+testCase.get(i).getNodeId()+","));
+                        jsonArray.put(testCase.get(i).toString().replaceFirst("\\{","{\"nodeId\":"+testCase.get(i).getNodeId()+",\"basePath\":\"" + testCaseResource.getBasePath()+ "\",\"path\":\"" + testCasePath.getPath()+"\","));
 
                     }
 
@@ -540,7 +542,7 @@ public class TestManager {
                         }
                     }
                     testCase.get(i).setParameters(paramArray.toString());
-                    jsonArray.put(testCase.get(i).toString().replaceFirst("\\{","{\"nodeId\":"+testCase.get(i).getNodeId()+","));
+                    jsonArray.put(testCase.get(i).toString().replaceFirst("\\{","{\"nodeId\":"+testCase.get(i).getNodeId()+",\"basePath\":\"" + testCaseResource.getBasePath()+ "\",\"path\":\"" + testCasePath.getPath()+"\","));
 
                 }
             }
